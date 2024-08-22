@@ -11,7 +11,7 @@ struct StackGraph {
     Graph *graph;
 };
 
-Graph *find_graph_with_subgraphs(size_t n, Graph& G, Graph& H) {
+Graph *find_graph_without_subgraphs(size_t n, Graph& G, Graph& H) {
     std::stack<StackGraph> stack; 
 
     for (size_t i = 0; i < n; ++i) {

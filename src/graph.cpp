@@ -1,5 +1,7 @@
 #include <stack>
 #include <vector>
+#include <string>
+#include <cstring>
 
 #include <fmt/core.h>
 
@@ -55,6 +57,23 @@ Graph Graph::complete(size_t n) {
 Graph Graph::empty(size_t n) {
     Graph g = { n, Matrix::new_uniform(n, 0) };
     return g;
+}
+
+std::string Graph::as_bitstring() const {
+    std::string result = "";
+
+    for (size_t r = 0; r < order; ++r) {
+        for (size_t c = r + 1; c < order; ++c) {
+            result += std::to_string(matrix[{r, c}]);
+        }
+    }
+
+    return result;
+}
+
+size_t Graph::as_id() const {
+    std::string bitstring = as_bitstring();
+    return (size_t)std::strtoll(bitstring.c_str(), NULL, 2);
 }
 
 void Graph::print() const {
