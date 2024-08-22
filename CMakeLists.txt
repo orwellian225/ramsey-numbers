@@ -10,7 +10,7 @@ add_subdirectory(lib/fmt)
 
 add_executable(ramnum-linear 
     src/linear_main.cpp
-    src/matrix.cpp src/graph.cpp
+    src/ramsey.cpp src/matrix.cpp src/graph.cpp
 )
 target_include_directories(ramnum-linear PUBLIC include PUBLIC lib/fmt/include)
 target_link_directories(ramnum-linear PRIVATE src lib/fmt/src)
