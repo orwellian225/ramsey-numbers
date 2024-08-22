@@ -22,6 +22,15 @@ int8_t& Matrix::read(std::pair<size_t, size_t> indices) const {
 int8_t& Matrix::operator[](size_t index) const { return read(index); }
 int8_t& Matrix::operator[](std::pair<size_t, size_t> indices) const { return read(indices); }
 
+bool Matrix::has_element(const int8_t value) const {
+    for (size_t i = 0; i < n * n; ++i) {
+        if (read(i) == value)
+            return true;
+    }
+
+    return false;
+}
+
 void Matrix::print() const {
     for (size_t i = 0; i < n; ++i) {
         for (size_t j = 0; j < n; ++j)

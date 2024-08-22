@@ -16,6 +16,8 @@ struct Matrix {
     int8_t& operator[](size_t index) const;
     int8_t& operator[](std::pair<size_t, size_t> indices) const;
 
+    bool has_element(const int8_t value) const;
+
     void print() const;
 };
 
