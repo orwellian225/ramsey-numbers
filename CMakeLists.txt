@@ -8,6 +8,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 add_subdirectory(lib/fmt)
 
+add_executable(ramnum-benchmark
+    src/benchmark_main.cpp
+    src/ramsey.cpp src/matrix.cpp src/graph.cpp
+)
+target_include_directories(ramnum-benchmark PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(ramnum-benchmark PRIVATE src lib/fmt/src)
+target_link_libraries(ramnum-benchmark fmt)
+
 add_executable(ramnum-cis
     src/cis_main.cpp
     src/ramsey.cpp src/matrix.cpp src/graph.cpp
