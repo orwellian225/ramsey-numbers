@@ -84,7 +84,9 @@ bool Graph::has_subgraph(const Graph& H) {
     std::stack<std::vector<size_t>*> stack;
     stack.push(new std::vector<size_t>());
 
+    size_t counter = 0;
     while (!stack.empty()) {
+        ++counter;
         std::vector<size_t>* item = stack.top();
         stack.pop();
 
@@ -98,6 +100,7 @@ bool Graph::has_subgraph(const Graph& H) {
 
                     if (vertex_a_in_G == vertex_b_in_G || H.matrix[{vertex_a_in_H, vertex_b_in_H}] == -1)
                         continue;
+
                     local_result = local_result && (this->matrix[{vertex_a_in_G, vertex_b_in_G}] == H.matrix[{vertex_a_in_H, vertex_b_in_H}]);
                 }
 
@@ -109,8 +112,11 @@ bool Graph::has_subgraph(const Graph& H) {
                     stack.pop();
                     delete temp;
                 }
+
+                delete item;
                 return true;
             }
+            delete item;
         } else {
             for (size_t i = (item->size() > 0 ? item->at(item->size() - 1) + 1 : 0); i < this->order; ++i) {
                 std::vector<size_t>* new_item = new std::vector<size_t>(*item);

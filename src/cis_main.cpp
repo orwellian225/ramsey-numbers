@@ -25,8 +25,10 @@ int main(int argc, char **argv) {
     // Output format is n, k, l, graph_id, graph_string
     if (resultant_graph == nullptr)
         fmt::println("{}, {}, {}, {}, /", graph_order, clique_order, indepset_order, "-1");
-    else
+    else {
         fmt::println("{}, {}, {}, {}, {}", graph_order, clique_order, indepset_order, resultant_graph->as_id(), resultant_graph->as_bitstring());
+        delete resultant_graph;
+    }
 
     return 0;
 }
