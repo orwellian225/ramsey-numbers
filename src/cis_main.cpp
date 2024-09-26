@@ -30,9 +30,9 @@ int main(int argc, char **argv) {
 
     // Output format is n, k, l, graph_id, graph_string
     if (resultant_graph == nullptr)
-        fmt::println("{}, {}, {}, {}, /, {}", graph_order, clique_order, indepset_order, "-1", duration.count());
+        fmt::println("{},{},{},{},/,{}", graph_order, clique_order, indepset_order, "-1", duration.count());
     else {
-        fmt::println("{}, {}, {}, {}, {}, {}", graph_order, clique_order, indepset_order, resultant_graph->as_id(), resultant_graph->as_bitstring(), duration.count());
+        fmt::println("{},{},{},{},{},{}", graph_order, clique_order, indepset_order, resultant_graph->as_id(), resultant_graph->as_bitstring(), duration.count());
         delete resultant_graph;
     }
 
