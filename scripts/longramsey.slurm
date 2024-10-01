@@ -5,15 +5,10 @@
 #SBATCH -N 1 ## Number of nodes
 #SPATCH -n 4 ## Number of cores per node
 
-# num_tests=14
-# test_graph_orders=(5 6 7 13 14 15 17 18 19 36 37 38 39 40)
-# test_clique_orders=(3 3 3 3 3 3 4 4 4 4 4 4 4 4)
-# test_iset_orders=(3 3 3 5 5 5 4 4 4 6 6 6 6 6)
-#
-num_tests=1
-test_graph_orders=(2 3 4 5 6 7 8 9 10 11 12 13)
-test_clique_orders=(3 3 3 3 3 3 3 3 3 3 3 3)
-test_iset_orders=(3 3 3 3 3 3 3 3 3 3 3 3)
+test_graph_orders=(2 3 4 5 6 7 8 9 10)
+test_clique_order=3
+test_iset_order=3
+
 
 if [ ! -d ./results ]; then
     mkdir -p ./results
@@ -25,8 +20,8 @@ if [ ! -f ./results/classical_cis_ramsey_results.csv ]; then
 fi
 
 # 0 -> num_tests - 1
-for i in {0..10};
+for i in {0..8};
 do
-    echo "test" $i":" ${test_graph_orders[$i]} "?= R("${test_clique_orders[$i]}","${test_iset_orders[$i]}")"
-    ./build/ramnum-cis ${test_graph_orders[$i]} ${test_clique_orders[$i]} ${test_iset_orders[$i]} | tee -a ./results/classical_cis_ramsey_results.csv
+    echo "test" $i":" ${test_graph_orders[$i]} "?= R("${test_clique_order}","${test_iset_order}")"
+    ./build/ramnum-cis ${test_graph_orders[$i]} ${test_clique_order} ${test_iset_order} | tee -a ./results/classical_cis_ramsey_results.csv
 done
