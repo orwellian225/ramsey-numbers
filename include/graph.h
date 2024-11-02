@@ -13,6 +13,7 @@ struct Graph {
 
     static Graph complete(size_t n);
     static Graph empty(size_t n);
+    static Graph *heap_empty(size_t n);
 
     std::string as_bitstring() const;
     size_t as_id() const;

@@ -31,3 +31,12 @@ add_executable(ramnum-linear
 target_include_directories(ramnum-linear PUBLIC include PUBLIC lib/fmt/include)
 target_link_directories(ramnum-linear PRIVATE src lib/fmt/src)
 target_link_libraries(ramnum-linear fmt)
+
+add_executable(test
+    src/test.cpp
+    src/ramsey.cpp src/matrix.cpp src/graph.cpp
+)
+target_link_libraries(test m)
+target_include_directories(test PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(test PRIVATE src lib/fmt/src)
+target_link_libraries(test fmt)

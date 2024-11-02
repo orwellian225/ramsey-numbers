@@ -59,6 +59,14 @@ Graph Graph::empty(size_t n) {
     return g;
 }
 
+Graph *Graph::heap_empty(size_t n) {
+    Graph *g = new Graph; 
+    g->order = n;
+    g->matrix = Matrix::new_uniform(n, 0);
+
+    return g;
+}
+
 std::string Graph::as_bitstring() const {
     std::string result = "";
 
