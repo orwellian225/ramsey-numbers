@@ -24,13 +24,32 @@ target_include_directories(ramnum-cis PUBLIC include PUBLIC lib/fmt/include)
 target_link_directories(ramnum-cis PRIVATE src lib/fmt/src)
 target_link_libraries(ramnum-cis fmt)
 
-add_executable(ramnum-linear 
-    src/linear_main.cpp
+add_executable(cis_linear
+    src/cis_linear_main.cpp
     src/ramsey.cpp src/matrix.cpp src/graph.cpp
 )
-target_include_directories(ramnum-linear PUBLIC include PUBLIC lib/fmt/include)
-target_link_directories(ramnum-linear PRIVATE src lib/fmt/src)
-target_link_libraries(ramnum-linear fmt)
+target_link_libraries(cis_linear m)
+target_include_directories(cis_linear PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(cis_linear PRIVATE src lib/fmt/src)
+target_link_libraries(cis_linear fmt)
+
+add_executable(cis_bintree
+    src/cis_bintree_main.cpp
+    src/ramsey.cpp src/matrix.cpp src/graph.cpp
+)
+target_link_libraries(cis_bintree m)
+target_include_directories(cis_bintree PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(cis_bintree PRIVATE src lib/fmt/src)
+target_link_libraries(cis_bintree fmt)
+
+add_executable(cis_reduced_bintree
+    src/cis_reduced_bintree_main.cpp
+    src/ramsey.cpp src/matrix.cpp src/graph.cpp
+)
+target_link_libraries(cis_reduced_bintree m)
+target_include_directories(cis_reduced_bintree PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(cis_reduced_bintree PRIVATE src lib/fmt/src)
+target_link_libraries(cis_reduced_bintree fmt)
 
 add_executable(cis_correctness
     src/cis_correctness_main.cpp

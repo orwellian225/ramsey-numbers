@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     Graph indepset = Graph::empty(indepset_order);
 
     auto start_time = std::chrono::high_resolution_clock::now();
-    Graph *resultant_graph = find_graph_without_subgraphs(graph_order, clique, indepset);
+    Graph *resultant_graph = linear_ramsey(graph_order, clique, indepset);
     auto end_time = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end_time - start_time;
 
@@ -37,3 +37,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
