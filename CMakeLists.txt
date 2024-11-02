@@ -32,11 +32,11 @@ target_include_directories(ramnum-linear PUBLIC include PUBLIC lib/fmt/include)
 target_link_directories(ramnum-linear PRIVATE src lib/fmt/src)
 target_link_libraries(ramnum-linear fmt)
 
-add_executable(test
-    src/test.cpp
+add_executable(cis_correctness
+    src/cis_correctness_main.cpp
     src/ramsey.cpp src/matrix.cpp src/graph.cpp
 )
-target_link_libraries(test m)
-target_include_directories(test PUBLIC include PUBLIC lib/fmt/include)
-target_link_directories(test PRIVATE src lib/fmt/src)
-target_link_libraries(test fmt)
+target_link_libraries(cis_correctness m)
+target_include_directories(cis_correctness PUBLIC include PUBLIC lib/fmt/include)
+target_link_directories(cis_correctness PRIVATE src lib/fmt/src)
+target_link_libraries(cis_correctness fmt)
