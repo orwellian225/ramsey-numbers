@@ -40,6 +40,8 @@ Graph *linear_ramsey(size_t n, Graph& F, Graph& H) {
         if (!G->has_subgraph(F) && !G->has_subgraph(H)) {
             return G;
         }
+
+	delete G;
     }
 
     return nullptr;
