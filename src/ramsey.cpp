@@ -19,7 +19,7 @@ Graph *find_graph_without_subgraphs(size_t n, Graph& F, Graph& H) {
 Graph *linear_ramsey(size_t n, Graph& F, Graph& H) {
     const size_t num_edges = n * (n - 1) / 2;
     const size_t max_graph_id = (size_t)std::floor(std::pow(2, n * (n - 1) / 2));
-    
+
     // bit strings print a binary string in reverse order to how its stored
     // so printed 01001 is {1, 0, 0, 1, 0}
     // as a result the graphs wont be made in the exact ordering of 0, 1, 2, 3, 4 etc
@@ -30,7 +30,7 @@ Graph *linear_ramsey(size_t n, Graph& F, Graph& H) {
         Graph *G = Graph::heap_empty(n);
         for (size_t i = 0; i < num_edges; ++i) {
             size_t row = (size_t)floor(n - 0.5 - sqrt(
-                (n - 0.5) * (n - 0.5) - 2 * i 
+                (n - 0.5) * (n - 0.5) - 2 * i
             ));
             size_t col = (size_t)( row + 1 + i + 0.5 * row * row - (n - 0.5) * row );
             G->matrix[{row, col}] = (int8_t)(bitstring[i]);
@@ -48,10 +48,9 @@ Graph *linear_ramsey(size_t n, Graph& F, Graph& H) {
 }
 
 Graph *bintree_ramsey(size_t n, Graph& F, Graph& H) {
-    std::stack<StackGraph> stack; 
+    std::stack<StackGraph> stack;
     stack.push({0, Graph::heap_unfinished(n)});
 
-    size_t counter = 0;
     while (!stack.empty()) {
         StackGraph item = stack.top();
         stack.pop();
@@ -97,7 +96,7 @@ Graph *bintree_ramsey(size_t n, Graph& F, Graph& H) {
 }
 
 Graph *reduced_bintree_ramsey(size_t n, Graph& F, Graph& H) {
-    std::stack<StackGraph> stack; 
+    std::stack<StackGraph> stack;
 
     for (size_t i = 0; i < n; ++i) {
         Graph *new_graph = Graph::heap_unfinished(n);
@@ -114,7 +113,7 @@ Graph *reduced_bintree_ramsey(size_t n, Graph& F, Graph& H) {
         stack.push({ n - 1, new_graph});
     }
 
-    size_t counter = 0;
+    // traverse tree and search for subgraphs
     while (!stack.empty()) {
         StackGraph item = stack.top();
         stack.pop();
@@ -125,33 +124,40 @@ Graph *reduced_bintree_ramsey(size_t n, Graph& F, Graph& H) {
         ));
         size_t col = (size_t)( row + 1 + item.length + 0.5 * row * row - (item.graph->order - 0.5) * row );
 
-        if (item.graph->matrix.has_element(-1)) {
-            Graph *right_graph = item.graph->clone();
+        // check if we are at a leaf node:
+        // if wa are not at a leaf then grow the tree
+        // The graph will have item.length edges specified, and we want to check if we are at a leaf node
+        // a leaf node will have all edges specified for the graph (n * (n - 1) / 2)
+        // and have then rearranged the equation to avoid division
+        if (2 * item.length < (item.graph->order *(item.graph->order - 1)) ) {
+            Graph *right_graph = item.graph;
             right_graph->matrix[{row, col}] = 1;
             right_graph->matrix[{col, row}] = 1;
-            if (!(right_graph->has_subgraph(F) || right_graph->has_subgraph(H)))
+            if (!(right_graph->has_subgraph(F) || right_graph->has_subgraph(H))) {
+            	right_graph = item.graph->clone();
                 stack.push({item.length + 1, right_graph});
-            else
-                delete right_graph;
+            }
 
             Graph *left_graph = item.graph;
             left_graph->matrix[{row, col}] = 0;
             left_graph->matrix[{col, row}] = 0;
-            if (!(left_graph->has_subgraph(F) || left_graph->has_subgraph(H)))
+            if (!(left_graph->has_subgraph(F) || left_graph->has_subgraph(H))) {
                 stack.push({ item.length + 1, left_graph});
-            else
+            } else {
                 delete left_graph;
+            }
 
-        } else {
-            if (!item.graph->has_subgraph(F) && !item.graph->has_subgraph(H)) {
+        } else { // we are at a leaf node and have already done all the checks, so clean-up
+            // if (!item.graph->has_subgraph(F) && !item.graph->has_subgraph(H)) {
                 while (!stack.empty()) { // empty the remainder of the stack
                     StackGraph temp = stack.top();
                     stack.pop();
                     delete temp.graph;
                 }
 
+                // return the popped item - the fully specified graph without either subgraphs
                 return item.graph;
-            }
+            // }
         }
 
     }
