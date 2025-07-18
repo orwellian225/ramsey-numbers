@@ -4,6 +4,7 @@
 #include <cstring>
 
 #include <fmt/core.h>
+#include <fmt/ranges.h>
 
 #include "graph.h"
 
@@ -18,12 +19,12 @@ Graph Graph::unfinished(size_t n) {
             g.matrix[{i,j}] = -1;
         }
     }
-    
+
     return g;
 }
 
 Graph *Graph::heap_unfinished(size_t n) {
-    Graph *g = new Graph; 
+    Graph *g = new Graph;
     g->order = n;
     g->matrix = Matrix::new_uniform(n, 0);
 
@@ -35,7 +36,7 @@ Graph *Graph::heap_unfinished(size_t n) {
             g->matrix[{i,j}] = -1;
         }
     }
-    
+
     return g;
 }
 
@@ -60,7 +61,7 @@ Graph Graph::empty(size_t n) {
 }
 
 Graph *Graph::heap_empty(size_t n) {
-    Graph *g = new Graph; 
+    Graph *g = new Graph;
     g->order = n;
     g->matrix = Matrix::new_uniform(n, 0);
 
@@ -99,22 +100,22 @@ bool Graph::has_subgraph(const Graph& H) {
         stack.pop();
 
         if (item->size() == H.order) {
-            bool local_result = true;
-            for (size_t vertex_a_in_H = 0; vertex_a_in_H < item->size(); ++vertex_a_in_H) {
-                size_t vertex_a_in_G = item->at(vertex_a_in_H);
+            // bool local_result = true;
+            // for (size_t vertex_a_in_H = 0; vertex_a_in_H < item->size(); ++vertex_a_in_H) {
+            //     size_t vertex_a_in_G = item->at(vertex_a_in_H);
 
-                for (size_t vertex_b_in_H = vertex_a_in_H; vertex_b_in_H < item->size(); ++vertex_b_in_H) {
-                    size_t vertex_b_in_G = item->at(vertex_b_in_H);
+            //     for (size_t vertex_b_in_H = vertex_a_in_H; vertex_b_in_H < item->size(); ++vertex_b_in_H) {
+            //         size_t vertex_b_in_G = item->at(vertex_b_in_H);
 
-                    if (vertex_a_in_G == vertex_b_in_G || H.matrix[{vertex_a_in_H, vertex_b_in_H}] == -1)
-                        continue;
+            //         if (vertex_a_in_G == vertex_b_in_G || H.matrix[{vertex_a_in_H, vertex_b_in_H}] == -1)
+            //             continue;
 
-                    local_result = local_result && (this->matrix[{vertex_a_in_G, vertex_b_in_G}] == H.matrix[{vertex_a_in_H, vertex_b_in_H}]);
-                }
+            //         local_result = local_result && (this->matrix[{vertex_a_in_G, vertex_b_in_G}] == H.matrix[{vertex_a_in_H, vertex_b_in_H}]);
+            //     }
 
-            }
+            // }
 
-            if (local_result) {
+            // if (local_result) {
                 while (!stack.empty()) { // Freeing all the items that still exist
                     std::vector<size_t>* temp = stack.top();
                     stack.pop();
@@ -123,14 +124,41 @@ bool Graph::has_subgraph(const Graph& H) {
 
                 delete item;
                 return true;
-            }
-            delete item;
+            // }
+            // delete item;
         } else {
             for (size_t i = (item->size() > 0 ? item->at(item->size() - 1) + 1 : 0); i < this->order; ++i) {
                 std::vector<size_t>* new_item = new std::vector<size_t>(*item);
                 new_item->push_back(i);
-                stack.push(new_item);
-            }
+
+                if (new_item->size() > 1) {
+	                // fmt::println("current item: {}", fmt::join(*new_item, " "));
+	                bool should_add = true;
+	                // for (size_t vertex_a_in_H = 0; vertex_a_in_H < new_item->size(); ++vertex_a_in_H) {
+	                    size_t vertex_a_in_H = new_item->size() - 1;
+	                    size_t vertex_a_in_G = new_item->at(vertex_a_in_H);
+
+	                    // for (size_t vertex_b_in_H = vertex_a_in_H; vertex_b_in_H < new_item->size(); ++vertex_b_in_H) {
+	                    for (size_t vertex_b_in_H = 0; vertex_b_in_H < new_item->size() - 1; ++vertex_b_in_H) {
+	                        size_t vertex_b_in_G = new_item->at(vertex_b_in_H);
+
+	                        if (vertex_a_in_G == vertex_b_in_G || H.matrix[{vertex_a_in_H, vertex_b_in_H}] == -1)
+	                            continue;
+
+	                        should_add = should_add && (this->matrix[{vertex_a_in_G, vertex_b_in_G}] == H.matrix[{vertex_a_in_H, vertex_b_in_H}]);
+	                   	}
+					// }
+
+				    if(should_add) {
+					    stack.push(new_item);
+				    } else {
+						delete new_item;
+					}
+
+	            } else {
+					stack.push(new_item);
+				}
+			}
 
             delete item;
         }
