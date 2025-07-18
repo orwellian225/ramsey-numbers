@@ -93,9 +93,7 @@ bool Graph::has_subgraph(const Graph& H) {
     std::stack<std::vector<size_t>*> stack;
     stack.push(new std::vector<size_t>());
 
-    size_t counter = 0;
     while (!stack.empty()) {
-        ++counter;
         std::vector<size_t>* item = stack.top();
         stack.pop();
 
@@ -128,34 +126,31 @@ bool Graph::has_subgraph(const Graph& H) {
             // delete item;
         } else {
             for (size_t i = (item->size() > 0 ? item->at(item->size() - 1) + 1 : 0); i < this->order; ++i) {
-                std::vector<size_t>* new_item = new std::vector<size_t>(*item);
-                new_item->push_back(i);
-
-                if (new_item->size() > 1) {
+                if (item->size() > 0) {
 	                // fmt::println("current item: {}", fmt::join(*new_item, " "));
 	                bool should_add = true;
 	                // for (size_t vertex_a_in_H = 0; vertex_a_in_H < new_item->size(); ++vertex_a_in_H) {
-	                    size_t vertex_a_in_H = new_item->size() - 1;
-	                    size_t vertex_a_in_G = new_item->at(vertex_a_in_H);
+	                    size_t vertex_a_in_H = item->size();
+	                    size_t vertex_a_in_G = i;
 
 	                    // for (size_t vertex_b_in_H = vertex_a_in_H; vertex_b_in_H < new_item->size(); ++vertex_b_in_H) {
-	                    for (size_t vertex_b_in_H = 0; vertex_b_in_H < new_item->size() - 1; ++vertex_b_in_H) {
-	                        size_t vertex_b_in_G = new_item->at(vertex_b_in_H);
+	                    for (size_t vertex_b_in_H = 0; vertex_b_in_H < item->size(); ++vertex_b_in_H) {
+	                        size_t vertex_b_in_G = item->at(vertex_b_in_H);
 
 	                        if (vertex_a_in_G == vertex_b_in_G || H.matrix[{vertex_a_in_H, vertex_b_in_H}] == -1)
 	                            continue;
 
 	                        should_add = should_add && (this->matrix[{vertex_a_in_G, vertex_b_in_G}] == H.matrix[{vertex_a_in_H, vertex_b_in_H}]);
 	                   	}
-					// }
 
 				    if(should_add) {
+						std::vector<size_t>* new_item = new std::vector<size_t>(*item);
+			            new_item->push_back(i);
 					    stack.push(new_item);
-				    } else {
-						delete new_item;
-					}
-
+				    }
 	            } else {
+					std::vector<size_t>* new_item = new std::vector<size_t>(*item);
+		            new_item->push_back(i);
 					stack.push(new_item);
 				}
 			}
